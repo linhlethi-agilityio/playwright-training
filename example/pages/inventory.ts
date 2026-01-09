@@ -20,7 +20,7 @@ export class InventoryPage {
    * @param page Playwright Page instance
    */
   constructor(readonly page: Page) {
-    this.menuButton = this.page.locator(NAVIGATION_SELECTORS.MENU_BUTTON);
+    this.menuButton = this.page.getByRole('button', { name: 'Open Menu' });
     this.menuContainer = this.page.locator(NAVIGATION_SELECTORS.MENU_CONTAINER);
     this.menuItemList = this.page.locator(NAVIGATION_SELECTORS.MENU_ITEM_LIST);
     this.menuCloseButton = this.page.locator(NAVIGATION_SELECTORS.MENU_CLOSE_BUTTON);
@@ -141,7 +141,7 @@ export class InventoryPage {
    */
   async addProductToCart(productName: string) {
     const productItem = this.page.locator('.inventory_item').filter({ hasText: productName });
-    const addButton = productItem.locator('button[data-test^="add-to-cart"]');
+    const addButton = productItem.getByRole('button', { name: /add to cart/i });
     await addButton.click();
   }
 
@@ -150,7 +150,7 @@ export class InventoryPage {
    * @param count Number of products to add
    */
   async addMultipleProductsToCart(count: number) {
-    const addButtons = this.page.locator('button[data-test^="add-to-cart"]');
+    const addButtons = this.page.getByRole('button', { name: /add to cart/i });
     for (let i = 0; i < count; i++) {
       await addButtons.nth(i).click();
     }
