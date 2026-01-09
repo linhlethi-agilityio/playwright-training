@@ -134,4 +134,25 @@ export class InventoryPage {
   async getCurrentSortOption(): Promise<string> {
     return await this.sortDropdown.inputValue();
   }
+
+  /**
+   * Adds a product to cart by product name.
+   * @param productName Product name to add to cart
+   */
+  async addProductToCart(productName: string) {
+    const productItem = this.page.locator('.inventory_item').filter({ hasText: productName });
+    const addButton = productItem.locator('button[data-test^="add-to-cart"]');
+    await addButton.click();
+  }
+
+  /**
+   * Adds the first N products to cart.
+   * @param count Number of products to add
+   */
+  async addMultipleProductsToCart(count: number) {
+    const addButtons = this.page.locator('button[data-test^="add-to-cart"]');
+    for (let i = 0; i < count; i++) {
+      await addButtons.nth(i).click();
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import { LoginPage, InventoryPage } from '@/example/pages';
+import { LoginPage, InventoryPage, CartPage, CheckoutPage } from '@/example/pages';
 
 /**
  * Custom Playwright fixtures for page objects.
@@ -7,6 +7,8 @@ import { LoginPage, InventoryPage } from '@/example/pages';
 interface PageFixtures {
   loginPage: LoginPage;
   inventoryPage: InventoryPage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
 }
 
 /**
@@ -18,6 +20,12 @@ const test = base.extend<PageFixtures>({
   },
   inventoryPage: async ({ page }, use) => {
     await use(new InventoryPage(page));
+  },
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
+  },
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
   },
 });
 
