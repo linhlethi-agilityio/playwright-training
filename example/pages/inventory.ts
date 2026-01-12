@@ -1,5 +1,10 @@
 import { Page, Locator } from '@playwright/test';
-import { WEBSITE, NAVIGATION_SELECTORS, NAVIGATION_MENU_ITEMS, INVENTORY_SELECTORS } from '@/example/constants';
+import {
+  WEBSITE,
+  NAVIGATION_SELECTORS,
+  NAVIGATION_MENU_ITEMS,
+  INVENTORY_SELECTORS,
+} from '@/example/constants';
 
 /**
  * Page Object Model for the Inventory (Products) page.
@@ -23,12 +28,18 @@ export class InventoryPage {
     this.menuButton = this.page.getByRole('button', { name: 'Open Menu' });
     this.menuContainer = this.page.locator(NAVIGATION_SELECTORS.MENU_CONTAINER);
     this.menuItemList = this.page.locator(NAVIGATION_SELECTORS.MENU_ITEM_LIST);
-    this.menuCloseButton = this.page.locator(NAVIGATION_SELECTORS.MENU_CLOSE_BUTTON);
+    this.menuCloseButton = this.page.locator(
+      NAVIGATION_SELECTORS.MENU_CLOSE_BUTTON
+    );
     this.inventoryList = this.page.locator(INVENTORY_SELECTORS.INVENTORY_LIST);
     this.inventoryItems = this.page.locator(INVENTORY_SELECTORS.INVENTORY_ITEM);
     this.sortDropdown = this.page.locator(INVENTORY_SELECTORS.SORT_DROPDOWN);
-    this.inventoryItemNames = this.page.locator(INVENTORY_SELECTORS.INVENTORY_ITEM_NAME);
-    this.inventoryItemPrices = this.page.locator(INVENTORY_SELECTORS.INVENTORY_ITEM_PRICE);
+    this.inventoryItemNames = this.page.locator(
+      INVENTORY_SELECTORS.INVENTORY_ITEM_NAME
+    );
+    this.inventoryItemPrices = this.page.locator(
+      INVENTORY_SELECTORS.INVENTORY_ITEM_PRICE
+    );
   }
 
   /**
@@ -64,7 +75,9 @@ export class InventoryPage {
    * Navigates to a specific menu item.
    * @param menuItem Menu item from NAVIGATION_MENU_ITEMS constant
    */
-  async navigateToMenuItem(menuItem: typeof NAVIGATION_MENU_ITEMS[keyof typeof NAVIGATION_MENU_ITEMS]) {
+  async navigateToMenuItem(
+    menuItem: (typeof NAVIGATION_MENU_ITEMS)[keyof typeof NAVIGATION_MENU_ITEMS]
+  ) {
     await this.openMenu();
     await this.clickMenuItem(menuItem.id);
   }
@@ -140,7 +153,9 @@ export class InventoryPage {
    * @param productName Product name to add to cart
    */
   async addProductToCart(productName: string) {
-    const productItem = this.page.locator('.inventory_item').filter({ hasText: productName });
+    const productItem = this.page
+      .locator('.inventory_item')
+      .filter({ hasText: productName });
     const addButton = productItem.getByRole('button', { name: /add to cart/i });
     await addButton.click();
   }

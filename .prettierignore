@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Build outputs
+dist
+build
+coverage
+playwright-report
+test-results
+
+# Playwright
+playwright/.auth
+
+# IDE
+.vscode
+.idea
+
+# Logs
+*.log

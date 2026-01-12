@@ -19,6 +19,7 @@ This repository contains automated test cases written in Playwright for testing 
 ## Test Coverage
 
 The project includes test cases for:
+
 - **Login**: Empty field validation, locked out user handling, valid credentials
 - **Navigation**: Menu navigation and page transitions
 - **Product Sorting**: Sorting by name and price
@@ -32,22 +33,26 @@ The project includes test cases for:
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://gitlab.asoft-python.com/linh.lethi/playwright-training.git
 cd playwright-training
 ```
 
 2. Checkout to the example branch:
+
 ```bash
 git checkout feat/example
 ```
 
 3. Install dependencies:
+
 ```bash
 pnpm install
 ```
 
 4. Install Playwright browsers:
+
 ```bash
 pnpm exec playwright install
 ```
@@ -57,16 +62,19 @@ pnpm exec playwright install
 ### Running Tests
 
 Run all tests:
+
 ```bash
 pnpm test
 ```
 
 Run tests in headed mode:
+
 ```bash
 pnpm test:headed
 ```
 
 Run tests in UI mode:
+
 ```bash
 pnpm test:ui
 ```
@@ -74,6 +82,7 @@ pnpm test:ui
 ### Viewing Reports
 
 Show the latest test report:
+
 ```bash
 pnpm test:show-report
 ```
@@ -81,21 +90,25 @@ pnpm test:show-report
 ### Code Quality
 
 Run ESLint:
+
 ```bash
 pnpm lint
 ```
 
 Fix linting issues:
+
 ```bash
 pnpm lint:fix
 ```
 
 Check code formatting:
+
 ```bash
 pnpm format:check
 ```
 
 Format code:
+
 ```bash
 pnpm format
 ```
@@ -122,6 +135,7 @@ playwright-training/
 ## Configuration
 
 The Playwright configuration ([playwright.config.ts](playwright.config.ts)) includes:
+
 - Test directory: `./example`
 - Parallel test execution
 - Retry on failure in CI

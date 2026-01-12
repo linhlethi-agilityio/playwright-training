@@ -23,7 +23,9 @@ export class CartPage {
     this.cartItems = this.page.locator(CHECKOUT_SELECTORS.CART_ITEM);
     this.cartItemNames = this.page.locator(CHECKOUT_SELECTORS.CART_ITEM_NAME);
     this.checkoutButton = this.page.locator(CHECKOUT_SELECTORS.CHECKOUT_BUTTON);
-    this.continueShoppingButton = this.page.locator(CHECKOUT_SELECTORS.CANCEL_BUTTON);
+    this.continueShoppingButton = this.page.locator(
+      CHECKOUT_SELECTORS.CANCEL_BUTTON
+    );
     this.removeButtons = this.page.locator(CHECKOUT_SELECTORS.REMOVE_BUTTON);
   }
 

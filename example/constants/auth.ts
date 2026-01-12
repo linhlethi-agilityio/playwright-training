@@ -12,7 +12,8 @@ export const LOGIN_CREDENTIALS = {
 export const LOGIN_ERROR_MESSAGES = {
   USERNAME_REQUIRED: 'Username is required',
   PASSWORD_REQUIRED: 'Password is required',
-  INVALID_CREDENTIALS: 'Username and password do not match any user in this service',
+  INVALID_CREDENTIALS:
+    'Username and password do not match any user in this service',
   LOCKED_OUT: 'Sorry, this user has been locked out',
 } as const;
 

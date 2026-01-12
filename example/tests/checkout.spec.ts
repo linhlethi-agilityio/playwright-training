@@ -98,7 +98,7 @@ test.describe('Checkout Tests', () => {
   });
 
   test.describe('SL010: Verify error is shown when a checkout field is empty', () => {
-    test.beforeEach(async ({ inventoryPage, cartPage, checkoutPage }) => {
+    test.beforeEach(async ({ inventoryPage, cartPage }) => {
       // Pre-condition: At least one product exists on cart, User is logged in and on the cart page
       await inventoryPage.addMultipleProductsToCart(1);
       await cartPage.clickCartIcon();
