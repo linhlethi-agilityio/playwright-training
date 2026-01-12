@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { WEBSITE, CHECKOUT_SELECTORS } from '@/example/constants';
+import { WEBSITE } from '@/example/constants';
 
 /**
  * Page Object Model for the Cart page.
@@ -18,15 +18,15 @@ export class CartPage {
    * @param page Playwright Page instance
    */
   constructor(readonly page: Page) {
-    this.cartBadge = this.page.locator(CHECKOUT_SELECTORS.CART_BADGE);
-    this.cartLink = this.page.locator(CHECKOUT_SELECTORS.CART_LINK);
-    this.cartItems = this.page.locator(CHECKOUT_SELECTORS.CART_ITEM);
-    this.cartItemNames = this.page.locator(CHECKOUT_SELECTORS.CART_ITEM_NAME);
-    this.checkoutButton = this.page.locator(CHECKOUT_SELECTORS.CHECKOUT_BUTTON);
-    this.continueShoppingButton = this.page.locator(
-      CHECKOUT_SELECTORS.CANCEL_BUTTON
-    );
-    this.removeButtons = this.page.locator(CHECKOUT_SELECTORS.REMOVE_BUTTON);
+    this.cartBadge = this.page.locator('.shopping_cart_badge');
+    this.cartLink = this.page.locator('.shopping_cart_link');
+    this.cartItems = this.page.locator('.cart_item');
+    this.cartItemNames = this.page.locator('.inventory_item_name');
+    this.checkoutButton = this.page.getByRole('button', { name: 'Checkout' });
+    this.continueShoppingButton = this.page.getByRole('button', {
+      name: 'Continue Shopping',
+    });
+    this.removeButtons = this.page.getByRole('button', { name: /remove/i });
   }
 
   /**

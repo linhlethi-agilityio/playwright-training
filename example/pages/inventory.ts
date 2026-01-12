@@ -1,10 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import {
-  WEBSITE,
-  NAVIGATION_SELECTORS,
-  NAVIGATION_MENU_ITEMS,
-  INVENTORY_SELECTORS,
-} from '@/example/constants';
+import { WEBSITE, NAVIGATION_MENU_ITEMS } from '@/example/constants';
 
 /**
  * Page Object Model for the Inventory (Products) page.
@@ -26,20 +21,14 @@ export class InventoryPage {
    */
   constructor(readonly page: Page) {
     this.menuButton = this.page.getByRole('button', { name: 'Open Menu' });
-    this.menuContainer = this.page.locator(NAVIGATION_SELECTORS.MENU_CONTAINER);
-    this.menuItemList = this.page.locator(NAVIGATION_SELECTORS.MENU_ITEM_LIST);
-    this.menuCloseButton = this.page.locator(
-      NAVIGATION_SELECTORS.MENU_CLOSE_BUTTON
-    );
-    this.inventoryList = this.page.locator(INVENTORY_SELECTORS.INVENTORY_LIST);
-    this.inventoryItems = this.page.locator(INVENTORY_SELECTORS.INVENTORY_ITEM);
-    this.sortDropdown = this.page.locator(INVENTORY_SELECTORS.SORT_DROPDOWN);
-    this.inventoryItemNames = this.page.locator(
-      INVENTORY_SELECTORS.INVENTORY_ITEM_NAME
-    );
-    this.inventoryItemPrices = this.page.locator(
-      INVENTORY_SELECTORS.INVENTORY_ITEM_PRICE
-    );
+    this.menuContainer = this.page.locator('.bm-menu');
+    this.menuItemList = this.page.locator('.bm-item-list');
+    this.menuCloseButton = this.page.getByRole('button', { name: 'Close Menu' });
+    this.inventoryList = this.page.locator('.inventory_list');
+    this.inventoryItems = this.page.locator('.inventory_item');
+    this.sortDropdown = this.page.locator('.product_sort_container');
+    this.inventoryItemNames = this.page.locator('.inventory_item_name');
+    this.inventoryItemPrices = this.page.locator('.inventory_item_price');
   }
 
   /**

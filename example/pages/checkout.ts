@@ -1,9 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import {
-  WEBSITE,
-  CHECKOUT_SELECTORS,
-  CHECKOUT_INFO,
-} from '@/example/constants';
+import { WEBSITE, CHECKOUT_INFO } from '@/example/constants';
 
 /**
  * Page Object Model for the Checkout page.
@@ -24,21 +20,19 @@ export class CheckoutPage {
    * @param page Playwright Page instance
    */
   constructor(readonly page: Page) {
-    this.firstNameInput = this.page.locator(
-      CHECKOUT_SELECTORS.FIRST_NAME_INPUT
-    );
-    this.lastNameInput = this.page.locator(CHECKOUT_SELECTORS.LAST_NAME_INPUT);
-    this.postalCodeInput = this.page.locator(
-      CHECKOUT_SELECTORS.POSTAL_CODE_INPUT
-    );
-    this.continueButton = this.page.locator(CHECKOUT_SELECTORS.CONTINUE_BUTTON);
-    this.finishButton = this.page.locator(CHECKOUT_SELECTORS.FINISH_BUTTON);
-    this.cancelButton = this.page.locator(CHECKOUT_SELECTORS.CANCEL_BUTTON);
-    this.errorMessage = this.page.locator(CHECKOUT_SELECTORS.ERROR_MESSAGE);
+    this.firstNameInput = this.page.getByPlaceholder('First Name');
+    this.lastNameInput = this.page.getByPlaceholder('Last Name');
+    this.postalCodeInput = this.page.getByPlaceholder('Zip/Postal Code');
+    this.continueButton = this.page.getByRole('button', { name: 'Continue' });
+    this.finishButton = this.page.getByRole('button', { name: 'Finish' });
+    this.cancelButton = this.page.getByRole('button', { name: 'Cancel' });
+    this.errorMessage = this.page.locator('[data-test="error"]');
     this.checkoutCompleteContainer = this.page.locator(
-      CHECKOUT_SELECTORS.CHECKOUT_COMPLETE_CONTAINER
+      '#checkout_complete_container'
     );
-    this.completeHeader = this.page.locator(CHECKOUT_SELECTORS.COMPLETE_HEADER);
+    this.completeHeader = this.page.getByRole('heading', {
+      name: /thank you for your order/i,
+    });
   }
 
   /**
