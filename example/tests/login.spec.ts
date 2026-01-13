@@ -15,8 +15,6 @@ test.describe('Sauce Demo Login', () => {
       loginPage,
     }) => {
       await test.step('Leave username and password blank and submit', async () => {
-        await loginPage.fillUsername('');
-        await loginPage.fillPassword('');
         await loginPage.clickLogin();
       });
 
@@ -38,7 +36,6 @@ test.describe('Sauce Demo Login', () => {
       loginPage,
     }) => {
       await test.step('Leave username blank and submit', async () => {
-        await loginPage.fillUsername('');
         await loginPage.fillPassword('secret_sauce');
         await loginPage.clickLogin();
       });
@@ -61,7 +58,6 @@ test.describe('Sauce Demo Login', () => {
     }) => {
       await test.step('Leave password blank and submit', async () => {
         await loginPage.fillUsername('standard_user');
-        await loginPage.fillPassword('');
         await loginPage.clickLogin();
       });
 
