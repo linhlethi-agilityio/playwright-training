@@ -19,10 +19,3 @@ export const NAVIGATION_MENU_ITEMS = {
     text: 'Reset App State',
   },
 } as const;
-
-export const NAVIGATION_SELECTORS = {
-  MENU_BUTTON: '.bm-burger-button button',
-  MENU_CONTAINER: '.bm-menu',
-  MENU_ITEM_LIST: '.bm-item-list',
-  MENU_CLOSE_BUTTON: '.bm-cross-button button',
-} as const;

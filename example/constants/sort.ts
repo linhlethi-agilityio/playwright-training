@@ -16,11 +16,3 @@ export const SORT_OPTIONS = {
     text: 'Price (high to low)',
   },
 } as const;
-
-export const INVENTORY_SELECTORS = {
-  SORT_DROPDOWN: '.product_sort_container',
-  INVENTORY_LIST: '.inventory_list',
-  INVENTORY_ITEM: '.inventory_item',
-  INVENTORY_ITEM_NAME: '.inventory_item_name',
-  INVENTORY_ITEM_PRICE: '.inventory_item_price',
-} as const;

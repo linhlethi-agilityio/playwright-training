@@ -1,22 +1,3 @@
-export const CHECKOUT_SELECTORS = {
-  CART_BADGE: '.shopping_cart_badge',
-  CART_LINK: '.shopping_cart_link',
-  CART_ITEM: '.cart_item',
-  CART_ITEM_NAME: '.inventory_item_name',
-  CHECKOUT_BUTTON: '#checkout',
-  CONTINUE_BUTTON: '#continue',
-  FINISH_BUTTON: '#finish',
-  CANCEL_BUTTON: '#cancel',
-  FIRST_NAME_INPUT: '#first-name',
-  LAST_NAME_INPUT: '#last-name',
-  POSTAL_CODE_INPUT: '#postal-code',
-  ERROR_MESSAGE: '[data-test="error"]',
-  CHECKOUT_COMPLETE_CONTAINER: '.checkout_complete_container',
-  COMPLETE_HEADER: '.complete-header',
-  ADD_TO_CART_BUTTON: '[data-test^="add-to-cart"]',
-  REMOVE_BUTTON: '[data-test^="remove"]',
-} as const;
-
 export const CHECKOUT_INFO = {
   VALID: {
     firstName: 'Jonny',
