@@ -33,6 +33,9 @@ jobs:
           retention-days: 30
 
       # === Deploy generated report to Vercel using GitHub Action ===
+      - name: Prepare Vercel deployment
+        run: cp vercel.json playwright-report/
+
       - name: Deploy Playwright report to Vercel
         uses: amondnet/vercel-action@v20
         with:
