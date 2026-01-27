@@ -1,0 +1,23 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Git hooks
+.husky/_
+
+# Build outputs
+dist
+build
+coverage
+playwright-report
+test-results
+
+# Playwright
+playwright/.auth
+
+# IDE
+.vscode
+.idea
+
+# Logs
+*.log
