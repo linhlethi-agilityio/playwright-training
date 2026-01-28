@@ -8,7 +8,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@pocket-base/*": ["./pocket-base/*"]
     }
   },
   "include": ["**/*.ts"]
