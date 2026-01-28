@@ -47,7 +47,7 @@ git clone https://gitlab.asoft-python.com/linh.lethi/playwright-training.git
 2. Checkout to the example branch:
 
 ```bash
-git checkout feat/example
+git checkout feat/pocket-base
 ```
 
 3. Install dependencies:

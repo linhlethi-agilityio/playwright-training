@@ -1,0 +1,18 @@
+import { test as base } from '@playwright/test';
+
+// Pages
+import { LoginPage } from '@pocket-base/pages';
+
+type LoginFixtures = {
+  loginPage: LoginPage;
+};
+
+export const test = base.extend<LoginFixtures>({
+  loginPage: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await use(loginPage);
+  },
+});
+
+export { expect } from '@playwright/test';
