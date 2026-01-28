@@ -1,12 +1,13 @@
 import { test as setup, expect } from '@playwright/test';
 
 // Constants
-import { LOGIN_LOGIN_CREDENTIALS } from '@pocket-base/constants';
+import {
+  LOGIN_LOGIN_CREDENTIALS,
+  AUTH_STATE_PATH,
+} from '@pocket-base/constants';
 
 // Pages
 import { LoginPage } from '@pocket-base/pages';
-
-const AUTH_STATE_PATH = 'playwright/.auth/user.json';
 
 setup('authenticate', async ({ page }) => {
   const loginPage = new LoginPage(page);
