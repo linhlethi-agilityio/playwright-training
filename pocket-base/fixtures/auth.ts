@@ -1,6 +1,5 @@
 import { test as base } from '@playwright/test';
 
-// Pages
 import { LoginPage } from '@pocket-base/pages';
 
 type LoginFixtures = {
