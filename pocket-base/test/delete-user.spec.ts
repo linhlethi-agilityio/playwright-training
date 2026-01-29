@@ -4,7 +4,6 @@ import {
   SUCCESS_MESSAGES,
 } from '@pocket-base/constants';
 import { deleteUsersTest as test, expect } from '@pocket-base/fixtures';
-import { createUser } from '@pocket-base/services';
 
 test.describe('Delete User', () => {
   test.describe.configure({ mode: 'serial' });
@@ -13,16 +12,10 @@ test.describe('Delete User', () => {
     test(
       'should delete a single user from the table',
       { tag: ['@PK011', '@user', '@delete'] },
-      async ({ deleteUsersPage, apiContext }) => {
+      async ({ deleteUsersPage }) => {
         const { userList } = deleteUsersPage;
 
-        await test.step('Create test user via API', async () => {
-          const user = await createUser(apiContext, 'single');
-          userList.push(user);
-        });
-
-        await test.step('Navigate to users page and verify user exists', async () => {
-          await deleteUsersPage.navigateTo();
+        await test.step('Verify user exists in table', async () => {
           await expect(
             deleteUsersPage.getUserByEmail(userList[0].email)
           ).toBeVisible();
@@ -68,21 +61,15 @@ test.describe('Delete User', () => {
   });
 
   test.describe('Delete multiple users', () => {
+    test.use({ userCount: 2 });
+
     test(
       'should delete two users from the table',
       { tag: ['@PK012', '@user', '@delete'] },
-      async ({ deleteUsersPage, apiContext }) => {
+      async ({ deleteUsersPage }) => {
         const { userList } = deleteUsersPage;
 
-        await test.step('Create test users via API', async () => {
-          for (let i = 0; i < 2; i++) {
-            const user = await createUser(apiContext, `multi_${i}`);
-            userList.push(user);
-          }
-        });
-
-        await test.step('Navigate to users page and verify users exist', async () => {
-          await deleteUsersPage.navigateTo();
+        await test.step('Verify users exist in table', async () => {
           for (const user of userList) {
             await expect(
               deleteUsersPage.getUserByEmail(user.email)
