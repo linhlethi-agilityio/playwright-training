@@ -1,23 +1,18 @@
-// Constants
 import {
   API_COLLECTIONS_PATH,
   CONFIRM_MESSAGES,
   SUCCESS_MESSAGES,
 } from '@pocket-base/constants';
+import { deleteUsersTest as test, expect } from '@pocket-base/fixtures';
+import { createUser } from '@pocket-base/services';
 
-// Fixtures
-import {
-  deleteUsersTest as test,
-  expect,
-  createUser,
-} from '@pocket-base/fixtures';
-
-test.describe('DELETE001 - PK011 - Delete User', () => {
+test.describe('Delete User', () => {
   test.describe.configure({ mode: 'serial' });
 
   test.describe('Delete single user', () => {
     test(
       'should delete a single user from the table',
+      { tag: ['@PK011', '@user', '@delete'] },
       async ({ deleteUsersPage, apiContext }) => {
         const { userList } = deleteUsersPage;
 
@@ -75,6 +70,7 @@ test.describe('DELETE001 - PK011 - Delete User', () => {
   test.describe('Delete multiple users', () => {
     test(
       'should delete two users from the table',
+      { tag: ['@PK012', '@user', '@delete'] },
       async ({ deleteUsersPage, apiContext }) => {
         const { userList } = deleteUsersPage;
 
@@ -96,9 +92,7 @@ test.describe('DELETE001 - PK011 - Delete User', () => {
 
         await test.step('Select checkboxes of both users to be deleted', async () => {
           for (const user of userList) {
-            await deleteUsersPage
-              .getUserDeleteCheckbox(user.email)
-              .click();
+            await deleteUsersPage.getUserDeleteCheckbox(user.email).click();
           }
           await expect(
             deleteUsersPage.frame.getByText('Selected 2 records')

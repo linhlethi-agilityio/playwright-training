@@ -1,12 +1,9 @@
 import { test as setup, expect } from '@playwright/test';
 
-// Constants
 import {
   LOGIN_LOGIN_CREDENTIALS,
   AUTH_STATE_PATH,
 } from '@pocket-base/constants';
-
-// Pages
 import { LoginPage } from '@pocket-base/pages';
 
 setup('authenticate', async ({ page }) => {

@@ -1,6 +1,5 @@
 import type { FrameLocator, Locator, Page } from '@playwright/test';
 
-// Constants
 import { WEBSITE } from '@pocket-base/constants';
 
 export class UsersPage {
