@@ -28,17 +28,38 @@ export class UsersPage {
   }
 
   getUserDeleteCheckbox(email: string) {
-    const userRow = this.frame.locator('table tbody tr', {
-      has: this.frame.locator(`text=${email}`),
-    });
+    const userRow = this.frame.getByRole('row', { name: email });
     return userRow.locator('.form-field label');
   }
 
   waitForApiResponse(method: string, urlPattern: string) {
     return this.page.waitForResponse(
-      (response) =>
+      response =>
         response.url().includes(urlPattern) &&
         response.request().method() === method
     );
+  }
+
+  getColumnSortButton(fieldName: string) {
+    return this.frame.locator(`table thead th.col-field-${fieldName}`);
+  }
+
+  async getColumnValues(fieldName: string): Promise<string[]> {
+    const cells = this.frame.locator(
+      `table tbody tr td.col-field-${fieldName}`
+    );
+    await cells.first().waitFor();
+    const values = await cells.allTextContents();
+    return values.map(v => v.trim());
+  }
+
+  async clickSort(fieldName: string) {
+    await this.getColumnSortButton(fieldName).click();
+    // Wait for table to re-render after sort
+    await this.frame
+      .locator('.table-loading')
+      .waitFor({ state: 'hidden' })
+      .catch(() => {});
+    await this.page.waitForTimeout(500);
   }
 }

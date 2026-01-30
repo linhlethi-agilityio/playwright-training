@@ -7,6 +7,7 @@ export type UserData = {
   id: string;
   email: string;
   username: string;
+  name?: string;
 };
 
 export const createUser = async (
@@ -27,6 +28,7 @@ export const createUser = async (
     id: result.id,
     email: userData.email,
     username: userData.username,
+    name: result.name,
   };
 };
 
@@ -34,9 +36,7 @@ export const deleteUser = async (
   apiContext: APIRequestContext,
   userId: string
 ) => {
-  const response = await apiContext.delete(
-    `${API_ENDPOINTS.USERS}/${userId}`
-  );
+  const response = await apiContext.delete(`${API_ENDPOINTS.USERS}/${userId}`);
   if (!response.ok() && response.status() !== 404) {
     throw new Error(`Cleanup failed: ${response.status()}`);
   }
