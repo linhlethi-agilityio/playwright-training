@@ -3,6 +3,7 @@ import { isAscending, isDescending } from '@pocket-base/utils';
 
 test.describe('Sort User', () => {
   test.describe.configure({ mode: 'serial' });
+  test.use({ userCount: 4 });
 
   test.describe('Sort by email', () => {
     test(
@@ -26,7 +27,7 @@ test.describe('Sort User', () => {
           const uiValues = await sortUsersPage.getColumnValues('email');
           expect(isAscending(uiValues)).toBeTruthy();
         });
-      },
+      }
     );
   });
 
@@ -43,7 +44,7 @@ test.describe('Sort User', () => {
           const uiValues = await sortUsersPage.getColumnValues('username');
           expect(isDescending(uiValues)).toBeTruthy();
         });
-      },
+      }
     );
   });
 
@@ -69,7 +70,7 @@ test.describe('Sort User', () => {
           const uiValues = await sortUsersPage.getColumnValues('name');
           expect(isAscending(uiValues)).toBeTruthy();
         });
-      },
+      }
     );
   });
 });

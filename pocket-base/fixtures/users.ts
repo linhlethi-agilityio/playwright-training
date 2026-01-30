@@ -44,6 +44,11 @@ export const usersTest = test.extend<UsersFixtures>({
 
     const pageWithUsers = Object.assign(usersPage, { userList });
     await use(pageWithUsers);
+
+    // Clean up test data after sorting
+    for (const user of userList) {
+      await deleteUser(apiContext, user.id);
+    }
   },
 });
 
