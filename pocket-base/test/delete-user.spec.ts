@@ -3,7 +3,7 @@ import {
   CONFIRM_MESSAGES,
   SUCCESS_MESSAGES,
 } from '@pocket-base/constants';
-import { deleteUsersTest as test, expect } from '@pocket-base/fixtures';
+import { usersTest as test, expect } from '@pocket-base/fixtures';
 
 test.describe('Delete User', () => {
   test.describe.configure({ mode: 'serial' });
