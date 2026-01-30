@@ -6,6 +6,7 @@ type UsersFixtures = {
   userCount: number;
   deleteUsersPage: UsersPage & { userList: UserData[] };
   sortUsersPage: UsersPage & { userList: UserData[] };
+  searchUsersPage: UsersPage;
 };
 
 export const usersTest = test.extend<UsersFixtures>({
@@ -49,6 +50,12 @@ export const usersTest = test.extend<UsersFixtures>({
     for (const user of userList) {
       await deleteUser(apiContext, user.id);
     }
+  },
+
+  searchUsersPage: async ({ page }, use) => {
+    const usersPage = new UsersPage(page);
+    await usersPage.navigateTo();
+    await use(usersPage);
   },
 });
 

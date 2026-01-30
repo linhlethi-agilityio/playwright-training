@@ -1,12 +1,14 @@
 import type { FrameLocator, Locator, Page } from '@playwright/test';
 
-import { WEBSITE } from '@pocket-base/constants';
+import { WEBSITE, MESSAGES } from '@pocket-base/constants';
 
 export class UsersPage {
   readonly page: Page;
   readonly frame: FrameLocator;
   readonly deleteButton: Locator;
   readonly confirmDeleteButton: Locator;
+  readonly searchInput: Locator;
+  readonly noRecordsMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,6 +17,10 @@ export class UsersPage {
       name: 'Delete selected',
     });
     this.confirmDeleteButton = this.frame.getByRole('button', { name: 'Yes' });
+    this.searchInput = this.frame.getByRole('textbox').nth(1);
+    this.noRecordsMessage = this.frame.getByText(
+      MESSAGES.NO_RECORDS_FOUND
+    );
   }
 
   async navigateTo() {
@@ -61,5 +67,23 @@ export class UsersPage {
       .waitFor({ state: 'hidden' })
       .catch(() => {});
     await this.page.waitForTimeout(500);
+  }
+
+  async fillSearch(value: string) {
+    await this.searchInput.fill(value);
+  }
+
+  async clickSearch() {
+    await this.searchInput.press('Enter');
+    await this.frame
+      .locator('.table-loading')
+      .waitFor({ state: 'hidden' })
+      .catch(() => {});
+    await this.page.waitForTimeout(500);
+  }
+
+  async clearSearch() {
+    await this.searchInput.clear();
+    await this.clickSearch();
   }
 }
