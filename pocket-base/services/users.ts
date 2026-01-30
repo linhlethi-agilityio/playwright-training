@@ -32,6 +32,23 @@ export const createUser = async (
   };
 };
 
+export const searchUsers = async (
+  apiContext: APIRequestContext,
+  keyword: string
+): Promise<UserData[]> => {
+  const filter = `email~"${keyword}"`;
+  const response = await apiContext.get(
+    `${API_ENDPOINTS.USERS}?filter=${encodeURIComponent(filter)}&perPage=200`
+  );
+
+  if (!response.ok()) {
+    throw new Error(`Failed to search users: ${response.status()}`);
+  }
+
+  const result = await response.json();
+  return result.items;
+};
+
 export const deleteUser = async (
   apiContext: APIRequestContext,
   userId: string

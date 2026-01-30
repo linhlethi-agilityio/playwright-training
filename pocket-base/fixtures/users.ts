@@ -1,54 +1,71 @@
+import { APIRequestContext, Page } from '@playwright/test';
+
 import { apiTest as test } from './api';
 import { UsersPage } from '@pocket-base/pages';
 import { createUser, deleteUser, UserData } from '@pocket-base/services';
 
+type UsersPageWithUsers = UsersPage & { userList: UserData[] };
+
 type UsersFixtures = {
   userCount: number;
-  deleteUsersPage: UsersPage & { userList: UserData[] };
-  sortUsersPage: UsersPage & { userList: UserData[] };
+  deleteUsersPage: UsersPageWithUsers;
+  sortUsersPage: UsersPageWithUsers;
+  searchUsersPage: UsersPageWithUsers;
+};
+
+const createUsers = async (
+  apiContext: APIRequestContext,
+  prefix: string,
+  count: number
+): Promise<UserData[]> => {
+  const userList: UserData[] = [];
+  for (let i = 0; i < count; i++) {
+    const user = await createUser(apiContext, `${prefix}_${i}`);
+    userList.push(user);
+  }
+  return userList;
+};
+
+const cleanupUsers = async (
+  apiContext: APIRequestContext,
+  userList: UserData[]
+) => {
+  for (const user of userList) {
+    await deleteUser(apiContext, user.id);
+  }
+};
+
+const setupUsersPage = async (
+  page: Page,
+  apiContext: APIRequestContext,
+  prefix: string,
+  userCount: number,
+  use: (fixture: UsersPageWithUsers) => Promise<void>
+) => {
+  const usersPage = new UsersPage(page);
+  const userList = await createUsers(apiContext, prefix, userCount);
+
+  await usersPage.navigateTo();
+
+  const pageWithUsers = Object.assign(usersPage, { userList });
+  await use(pageWithUsers);
+
+  await cleanupUsers(apiContext, userList);
 };
 
 export const usersTest = test.extend<UsersFixtures>({
   userCount: 1,
 
   deleteUsersPage: async ({ page, apiContext, userCount }, use) => {
-    const usersPage = new UsersPage(page);
-    const userList: UserData[] = [];
-
-    for (let i = 0; i < userCount; i++) {
-      const user = await createUser(apiContext, `user_${i}`);
-      userList.push(user);
-    }
-
-    await usersPage.navigateTo();
-
-    const pageWithUsers = Object.assign(usersPage, { userList });
-    await use(pageWithUsers);
-
-    // Clean up test data that wasn't deleted via UI
-    for (const user of userList) {
-      await deleteUser(apiContext, user.id);
-    }
+    await setupUsersPage(page, apiContext, 'user', userCount, use);
   },
 
   sortUsersPage: async ({ page, apiContext, userCount }, use) => {
-    const usersPage = new UsersPage(page);
-    const userList: UserData[] = [];
+    await setupUsersPage(page, apiContext, 'sort', userCount, use);
+  },
 
-    for (let i = 0; i < userCount; i++) {
-      const user = await createUser(apiContext, `sort_${i}`);
-      userList.push(user);
-    }
-
-    await usersPage.navigateTo();
-
-    const pageWithUsers = Object.assign(usersPage, { userList });
-    await use(pageWithUsers);
-
-    // Clean up test data after sorting
-    for (const user of userList) {
-      await deleteUser(apiContext, user.id);
-    }
+  searchUsersPage: async ({ page, apiContext, userCount }, use) => {
+    await setupUsersPage(page, apiContext, 'search', userCount, use);
   },
 });
 
