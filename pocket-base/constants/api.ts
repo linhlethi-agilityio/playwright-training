@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
 
 export const SUCCESS_MESSAGES = {
   CREATED_RECORD: 'Successfully created record.',
+  UPDATED_RECORD: 'Successfully updated record.',
   DELETED_RECORD: 'Successfully deleted the selected record.',
   DELETED_RECORDS: 'Successfully deleted the selected records.',
 };
