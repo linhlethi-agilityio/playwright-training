@@ -9,6 +9,8 @@ export class UsersPage {
   readonly confirmDeleteButton: Locator;
   readonly searchInput: Locator;
   readonly noRecordsMessage: Locator;
+  readonly newRecordButton: Locator;
+  readonly createButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -21,6 +23,10 @@ export class UsersPage {
     this.noRecordsMessage = this.frame.getByText(
       MESSAGES.NO_RECORDS_FOUND
     );
+    this.newRecordButton = this.frame.getByRole('button', {
+      name: 'New record',
+    });
+    this.createButton = this.frame.getByRole('button', { name: 'Create' });
   }
 
   async navigateTo() {
@@ -85,5 +91,45 @@ export class UsersPage {
   async clearSearch() {
     await this.searchInput.clear();
     await this.clickSearch();
+  }
+
+  private getFormFieldContainer(label: string) {
+    return this.frame.locator('.form-field', {
+      has: this.frame.locator(`label .txt`, { hasText: new RegExp(`^${label}$`) }),
+    });
+  }
+
+  getFormField(label: string) {
+    return this.getFormFieldContainer(label).locator('input, textarea');
+  }
+
+  getFormFieldError(label: string) {
+    return this.getFormFieldContainer(label).locator('.help-block');
+  }
+
+  async clickNewRecord() {
+    await this.newRecordButton.click();
+    await this.createButton.waitFor();
+  }
+
+  async clickCreate() {
+    await this.createButton.click();
+  }
+
+  async fillCreateForm(data: {
+    id?: string;
+    email?: string;
+    password?: string;
+    passwordConfirm?: string;
+    username?: string;
+    name?: string;
+  }) {
+    if (data.id) await this.getFormField('id').fill(data.id);
+    if (data.email) await this.getFormField('email').fill(data.email);
+    if (data.password) await this.getFormField('Password').fill(data.password);
+    if (data.passwordConfirm)
+      await this.getFormField('Password confirm').fill(data.passwordConfirm);
+    if (data.username) await this.getFormField('username').fill(data.username);
+    if (data.name) await this.getFormField('name').fill(data.name);
   }
 }

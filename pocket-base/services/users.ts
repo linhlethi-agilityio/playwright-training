@@ -49,6 +49,23 @@ export const searchUsers = async (
   return result.items;
 };
 
+export const getUserByEmail = async (
+  apiContext: APIRequestContext,
+  email: string
+): Promise<UserData | null> => {
+  const filter = `email="${email}"`;
+  const response = await apiContext.get(
+    `${API_ENDPOINTS.USERS}?filter=${encodeURIComponent(filter)}`
+  );
+
+  if (!response.ok()) {
+    throw new Error(`Failed to get user: ${response.status()}`);
+  }
+
+  const result = await response.json();
+  return result.items.length > 0 ? result.items[0] : null;
+};
+
 export const deleteUser = async (
   apiContext: APIRequestContext,
   userId: string
