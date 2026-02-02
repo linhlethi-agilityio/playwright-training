@@ -69,19 +69,49 @@ test.describe('Create User', () => {
         });
       });
 
-      await test.step('Click "Create" button', async () => {
+      await test.step('Click "Create" and verify email validation error', async () => {
         await createUsersPage.clickCreate();
-      });
-
-      await test.step('Verify validation error for empty email field', async () => {
-        const emailInput = createUsersPage.getFormField('email');
-        const validationMessage = await emailInput.evaluate(
+        const emailValidation = await createUsersPage
+          .getFormField('email')
           // eslint-disable-next-line no-undef
-          el => (el as HTMLInputElement).validationMessage
-        );
-        expect(validationMessage.toLowerCase()).toContain(
+          .evaluate(el => (el as HTMLInputElement).validationMessage);
+        expect(emailValidation.toLowerCase()).toContain(
           ERROR_MESSAGES.REQUIRED
         );
+      });
+
+      await test.step('Fill email, click "Create" and verify password validation error', async () => {
+        await createUsersPage.getFormField('email').fill('test@example.com');
+        await createUsersPage.clickCreate();
+        const passwordValidation = await createUsersPage
+          .getFormField('Password')
+          // eslint-disable-next-line no-undef
+          .evaluate(el => (el as HTMLInputElement).validationMessage);
+        expect(passwordValidation.toLowerCase()).toContain(
+          ERROR_MESSAGES.REQUIRED
+        );
+      });
+
+      await test.step('Fill password, click "Create" and verify password confirm validation error', async () => {
+        await createUsersPage.getFormField('Password').fill('Test123456');
+        await createUsersPage.clickCreate();
+        const confirmValidation = await createUsersPage
+          .getFormField('Password confirm')
+          // eslint-disable-next-line no-undef
+          .evaluate(el => (el as HTMLInputElement).validationMessage);
+        expect(confirmValidation.toLowerCase()).toContain(
+          ERROR_MESSAGES.REQUIRED
+        );
+      });
+
+      await test.step('Fill mismatched password confirm, click "Create" and verify mismatch error', async () => {
+        await createUsersPage
+          .getFormField('Password confirm')
+          .fill('WrongPassword123');
+        await createUsersPage.clickCreate();
+        await expect(
+          createUsersPage.getFormFieldError('Password confirm')
+        ).toContainText(ERROR_MESSAGES.PASSWORD_MISMATCH);
       });
 
       await test.step('Verify user is not created', async () => {
