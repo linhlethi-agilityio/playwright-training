@@ -11,6 +11,7 @@ export class UsersPage {
   readonly noRecordsMessage: Locator;
   readonly newRecordButton: Locator;
   readonly createButton: Locator;
+  readonly saveChangesButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,6 +26,9 @@ export class UsersPage {
       name: 'New record',
     });
     this.createButton = this.frame.getByRole('button', { name: 'Create' });
+    this.saveChangesButton = this.frame.getByRole('button', {
+      name: 'Save changes',
+    });
   }
 
   async navigateTo() {
@@ -127,6 +131,23 @@ export class UsersPage {
 
   async clickCreate() {
     await this.createButton.click();
+  }
+
+  async clickUserRow(email: string) {
+    await this.frame.getByRole('row', { name: email }).click();
+    await this.saveChangesButton.waitFor();
+    await this.frame
+      .locator('.btn-loading')
+      .waitFor({ state: 'hidden' });
+  }
+
+  async clickChangePassword() {
+    await this.frame.getByText('Change password').click();
+    await this.getFormField('Password').waitFor();
+  }
+
+  async clickSaveChanges() {
+    await this.saveChangesButton.click();
   }
 
   async fillCreateForm(data: Record<string, unknown>) {

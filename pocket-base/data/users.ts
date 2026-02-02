@@ -1,5 +1,14 @@
 import { ERROR_MESSAGES } from '@pocket-base/constants';
 
+const updateUid = Date.now();
+
+export const UPDATE_USER_DATA = {
+  username: `updated_user_${updateUid}`,
+  email: `updated_user_${updateUid}@example.com`,
+  password: 'NewPassword123',
+  passwordConfirm: 'NewPassword123',
+};
+
 export const CREATE_USER_VALIDATION_CASES = [
   {
     name: 'empty email',
