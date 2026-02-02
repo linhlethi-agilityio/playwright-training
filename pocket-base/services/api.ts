@@ -6,9 +6,13 @@ import {
   LOGIN_LOGIN_CREDENTIALS,
 } from '@pocket-base/constants';
 
-export const getAccessToken = async (
-  request: APIRequest
-): Promise<string> => {
+let cachedToken: string | null = null;
+
+export const getAccessToken = async (request: APIRequest): Promise<string> => {
+  if (cachedToken) {
+    return cachedToken;
+  }
+
   const context = await request.newContext({ baseURL: BASE_API_URL });
 
   const response = await context.post(API_ENDPOINTS.AUTH, {
@@ -24,5 +28,7 @@ export const getAccessToken = async (
 
   const data = await response.json();
   await context.dispose();
-  return data.token;
+  cachedToken = data.token;
+
+  return cachedToken as string;
 };
