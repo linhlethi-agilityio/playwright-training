@@ -2,15 +2,16 @@ import { usersTest as test, expect } from '@pocket-base/fixtures';
 
 import { API_COLLECTIONS_PATH, SUCCESS_MESSAGES } from '@pocket-base/constants';
 import { UPDATE_USER_DATA } from '@pocket-base/data';
-import { getUserByEmail } from '@pocket-base/services';
+import { UserData } from '@pocket-base/services';
 
 test.describe('Update User', () => {
   test(
     'should update an existing user successfully',
     { tag: ['@PK012', '@user', '@update'] },
-    async ({ updateUsersPage, apiContext }) => {
+    async ({ updateUsersPage }) => {
       const { userList } = updateUsersPage;
       const userEmail = userList[0].email;
+      let apiResponse: UserData;
 
       await test.step('Click the row of the user to update', async () => {
         await updateUsersPage.clickUserRow(userEmail);
@@ -31,7 +32,11 @@ test.describe('Update User', () => {
         );
         await updateUsersPage.clickSaveChanges();
         const response = await responsePromise;
+        apiResponse = await response.json();
+
         expect(response.status()).toBe(200);
+        expect(apiResponse.email).toBe(UPDATE_USER_DATA.email);
+        expect(apiResponse.username).toBe(UPDATE_USER_DATA.username);
       });
 
       await test.step('Verify success message is displayed', async () => {
@@ -40,20 +45,20 @@ test.describe('Update User', () => {
         ).toBeVisible();
       });
 
-      await test.step('Verify updated user appears in the table', async () => {
-        await expect(
-          updateUsersPage.getUserByEmail(UPDATE_USER_DATA.email)
-        ).toBeVisible();
-      });
+      await test.step('Verify UI result matches API response', async () => {
+        const userRow = updateUsersPage.frame.getByRole('row', {
+          name: apiResponse.email,
+        });
+        await expect(userRow).toBeVisible();
 
-      await test.step('Verify API returns updated data', async () => {
-        const apiUser = await getUserByEmail(
-          apiContext,
-          UPDATE_USER_DATA.email
-        );
-        expect(apiUser).not.toBeNull();
-        expect(apiUser!.username).toBe(UPDATE_USER_DATA.username);
-        expect(apiUser!.email).toBe(UPDATE_USER_DATA.email);
+        const emailCell = userRow.getByRole('cell', {
+          name: apiResponse.email,
+        });
+        const usernameCell = userRow.getByRole('cell', {
+          name: apiResponse.username,
+        });
+        await expect(emailCell).toBeVisible();
+        await expect(usernameCell).toBeVisible();
       });
     }
   );
