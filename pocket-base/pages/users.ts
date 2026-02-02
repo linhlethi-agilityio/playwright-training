@@ -9,6 +9,8 @@ export class UsersPage {
   readonly confirmDeleteButton: Locator;
   readonly searchInput: Locator;
   readonly noRecordsMessage: Locator;
+  readonly newRecordButton: Locator;
+  readonly createButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -18,9 +20,11 @@ export class UsersPage {
     });
     this.confirmDeleteButton = this.frame.getByRole('button', { name: 'Yes' });
     this.searchInput = this.frame.getByRole('textbox').nth(1);
-    this.noRecordsMessage = this.frame.getByText(
-      MESSAGES.NO_RECORDS_FOUND
-    );
+    this.noRecordsMessage = this.frame.getByText(MESSAGES.NO_RECORDS_FOUND);
+    this.newRecordButton = this.frame.getByRole('button', {
+      name: 'New record',
+    });
+    this.createButton = this.frame.getByRole('button', { name: 'Create' });
   }
 
   async navigateTo() {
@@ -85,5 +89,60 @@ export class UsersPage {
   async clearSearch() {
     await this.searchInput.clear();
     await this.clickSearch();
+  }
+
+  private getFormFieldContainer(label: string) {
+    return this.frame.locator('.form-field', {
+      has: this.frame.locator(`label .txt`, {
+        hasText: new RegExp(`^${label}$`),
+      }),
+    });
+  }
+
+  getFormField(label: string) {
+    return this.getFormFieldContainer(label).locator('input, textarea');
+  }
+
+  getFormFieldError(label: string) {
+    return this.getFormFieldContainer(label).locator('.help-block');
+  }
+
+  async getFormFieldValidationMessage(label: string): Promise<string> {
+    const input = this.getFormField(label);
+    const browserMessage = await input.evaluate(
+      // eslint-disable-next-line no-undef
+      el => (el as HTMLInputElement).validationMessage
+    );
+    if (browserMessage) return browserMessage;
+
+    const helpBlock = this.getFormFieldError(label);
+    await helpBlock.waitFor();
+    return helpBlock.innerText();
+  }
+
+  async clickNewRecord() {
+    await this.newRecordButton.click();
+    await this.createButton.waitFor();
+  }
+
+  async clickCreate() {
+    await this.createButton.click();
+  }
+
+  async fillCreateForm(data: Record<string, unknown>) {
+    const fieldMap: Record<string, string> = {
+      id: 'id',
+      email: 'email',
+      password: 'Password',
+      passwordConfirm: 'Password confirm',
+      username: 'username',
+      name: 'name',
+    };
+
+    for (const [key, label] of Object.entries(fieldMap)) {
+      if (typeof data[key] === 'string') {
+        await this.getFormField(label).fill(data[key]);
+      }
+    }
   }
 }

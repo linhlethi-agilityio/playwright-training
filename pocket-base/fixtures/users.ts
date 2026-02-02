@@ -11,6 +11,7 @@ type UsersFixtures = {
   deleteUsersPage: UsersPageWithUsers;
   sortUsersPage: UsersPageWithUsers;
   searchUsersPage: UsersPageWithUsers;
+  createUsersPage: UsersPage;
 };
 
 const createUsers = async (
@@ -66,6 +67,12 @@ export const usersTest = test.extend<UsersFixtures>({
 
   searchUsersPage: async ({ page, apiContext, userCount }, use) => {
     await setupUsersPage(page, apiContext, 'search', userCount, use);
+  },
+
+  createUsersPage: async ({ page }, use) => {
+    const usersPage = new UsersPage(page);
+    await usersPage.navigateTo();
+    await use(usersPage);
   },
 });
 
