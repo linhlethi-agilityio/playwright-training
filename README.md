@@ -144,3 +144,7 @@ The Playwright configuration ([playwright.config.ts](playwright.config.ts)) incl
 - HTML reporter
 - Multi-browser support (Chromium, Firefox, WebKit)
 - Authentication setup project
+
+## Test Report
+
+[View Latest Test Report](https://playwright-training-ten.vercel.app/)
