@@ -1,9 +1,7 @@
 import { test as setup, expect } from '@playwright/test';
 
-import {
-  LOGIN_LOGIN_CREDENTIALS,
-  AUTH_STATE_PATH,
-} from '@pocket-base/constants';
+import { AUTH_STATE_PATH } from '@pocket-base/constants';
+import { LOGIN_LOGIN_CREDENTIALS } from '@pocket-base/data';
 import { LoginPage } from '@pocket-base/pages';
 
 setup('authenticate', async ({ page }) => {
