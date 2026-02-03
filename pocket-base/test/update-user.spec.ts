@@ -53,9 +53,11 @@ test.describe('Update User', () => {
 
         const emailCell = userRow.getByRole('cell', {
           name: apiResponse.email,
+          exact: true,
         });
         const usernameCell = userRow.getByRole('cell', {
           name: apiResponse.username,
+          exact: true,
         });
         await expect(emailCell).toBeVisible();
         await expect(usernameCell).toBeVisible();

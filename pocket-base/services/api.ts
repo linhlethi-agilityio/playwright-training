@@ -1,10 +1,7 @@
 import { APIRequest } from '@playwright/test';
 
-import {
-  API_ENDPOINTS,
-  BASE_API_URL,
-  LOGIN_LOGIN_CREDENTIALS,
-} from '@pocket-base/constants';
+import { API_ENDPOINTS, BASE_API_URL } from '@pocket-base/constants';
+import { LOGIN_LOGIN_CREDENTIALS } from '@pocket-base/data';
 
 let cachedToken: string | null = null;
 

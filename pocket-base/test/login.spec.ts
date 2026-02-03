@@ -1,8 +1,8 @@
+import { ERROR_MESSAGES } from '@pocket-base/constants';
 import {
   LOGIN_LOGIN_CREDENTIALS,
   WRONG_LOGIN_CREDENTIALS,
-  ERROR_MESSAGES,
-} from '@pocket-base/constants';
+} from '@pocket-base/data';
 import { test, expect } from '@pocket-base/fixtures';
 
 test.use({ storageState: { cookies: [], origins: [] } });
