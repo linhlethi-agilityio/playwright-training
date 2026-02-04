@@ -1,10 +1,12 @@
 import type { FrameLocator, Locator, Page } from '@playwright/test';
 
 import { WEBSITE, MESSAGES } from '@pocket-base/constants';
+import { TableHelper } from '@pocket-base/utils';
 
 export class UsersPage {
   readonly page: Page;
   readonly frame: FrameLocator;
+  readonly table: TableHelper;
   readonly deleteButton: Locator;
   readonly confirmDeleteButton: Locator;
   readonly searchInput: Locator;
@@ -16,6 +18,7 @@ export class UsersPage {
   constructor(page: Page) {
     this.page = page;
     this.frame = page.frameLocator('iframe');
+    this.table = new TableHelper(this.frame, page);
     this.deleteButton = this.frame.getByRole('button', {
       name: 'Delete selected',
     });
@@ -42,8 +45,7 @@ export class UsersPage {
   }
 
   getUserDeleteCheckbox(email: string) {
-    const userRow = this.frame.getByRole('row', { name: email });
-    return userRow.locator('.form-field label');
+    return this.table.getCheckbox(email);
   }
 
   waitForApiResponse(method: string, urlPattern: string) {
@@ -55,26 +57,15 @@ export class UsersPage {
   }
 
   getColumnSortButton(fieldName: string) {
-    return this.frame.locator(`table thead th.col-field-${fieldName}`);
+    return this.table.getColumnHeader(fieldName);
   }
 
   async getColumnValues(fieldName: string): Promise<string[]> {
-    const cells = this.frame.locator(
-      `table tbody tr td.col-field-${fieldName}`
-    );
-    await cells.first().waitFor();
-    const values = await cells.allTextContents();
-    return values.map(v => v.trim());
+    return this.table.getColumnValues(fieldName);
   }
 
   async clickSort(fieldName: string) {
-    await this.getColumnSortButton(fieldName).click();
-    // Wait for table to re-render after sort
-    await this.frame
-      .locator('.table-loading')
-      .waitFor({ state: 'hidden' })
-      .catch(() => {});
-    await this.page.waitForTimeout(500);
+    await this.table.clickSort(fieldName);
   }
 
   async fillSearch(value: string) {
@@ -134,7 +125,7 @@ export class UsersPage {
   }
 
   async clickUserRow(email: string) {
-    await this.frame.getByRole('row', { name: email }).click();
+    await this.table.getRow(email).click();
     await this.saveChangesButton.waitFor();
     await this.frame
       .locator('.btn-loading')
