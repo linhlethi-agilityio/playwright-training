@@ -11,8 +11,10 @@
     "format:check": "prettier --check .",
     "test": "exec playwright test",
     "test:headed": "exec playwright test --headed",
+    "test:debug": "exec playwright test --debug",
     "test:ui": "exec playwright test --ui",
     "test:show-report": "exec playwright show-report",
+    "test:show-trace": "exec playwright show-trace",
     "prepare": "husky"
   },
   "keywords": [],
