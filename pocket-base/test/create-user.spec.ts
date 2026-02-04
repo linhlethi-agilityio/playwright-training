@@ -2,7 +2,7 @@ import { usersTest as test, expect } from '@pocket-base/fixtures';
 
 import { API_COLLECTIONS_PATH, SUCCESS_MESSAGES } from '@pocket-base/constants';
 import { UserData, getUserByEmail, deleteUser } from '@pocket-base/services';
-import { generateUserData } from '@pocket-base/utils';
+import { generateUserData, verifyUserRowMatchesApiResponse } from '@pocket-base/utils';
 import { CREATE_USER_VALIDATION_CASES } from '@pocket-base/data';
 
 test.describe('Create User', () => {
@@ -54,21 +54,10 @@ test.describe('Create User', () => {
       });
 
       await test.step('Verify UI result matches API response', async () => {
-        const userRow = createUsersPage.frame.getByRole('row', {
-          name: apiResponse.email,
-        });
-        await expect(userRow).toBeVisible();
-
-        const emailCell = userRow.getByRole('cell', {
-          name: apiResponse.email,
-          exact: true,
-        });
-        const usernameCell = userRow.getByRole('cell', {
-          name: apiResponse.username,
-          exact: true,
-        });
-        await expect(emailCell).toBeVisible();
-        await expect(usernameCell).toBeVisible();
+        await verifyUserRowMatchesApiResponse(
+          createUsersPage.frame,
+          apiResponse
+        );
       });
     }
   );
