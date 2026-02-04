@@ -1,7 +1,7 @@
 import { usersTest as test, expect } from '@pocket-base/fixtures';
 
-import { SUCCESS_MESSAGES } from '@pocket-base/constants';
-import { getUserByEmail, deleteUser } from '@pocket-base/services';
+import { API_COLLECTIONS_PATH, SUCCESS_MESSAGES } from '@pocket-base/constants';
+import { UserData, getUserByEmail, deleteUser } from '@pocket-base/services';
 import { generateUserData } from '@pocket-base/utils';
 import { CREATE_USER_VALIDATION_CASES } from '@pocket-base/data';
 
@@ -20,9 +20,10 @@ test.describe('Create User', () => {
   test(
     'should create a new user with valid data',
     { tag: ['@PK009', '@user', '@create'] },
-    async ({ createUsersPage, apiContext }) => {
+    async ({ createUsersPage }) => {
       const userData = generateUserData('create');
       createdUserEmail = userData.email;
+      let apiResponse: UserData;
 
       await test.step('Click "New record" button', async () => {
         await createUsersPage.clickNewRecord();
@@ -33,23 +34,41 @@ test.describe('Create User', () => {
       });
 
       await test.step('Click "Create" button', async () => {
+        const responsePromise = createUsersPage.waitForApiResponse(
+          'POST',
+          API_COLLECTIONS_PATH
+        );
         await createUsersPage.clickCreate();
+        const response = await responsePromise;
+        apiResponse = await response.json();
+
+        expect(response.status()).toBe(200);
+        expect(apiResponse.email).toBe(userData.email);
+        expect(apiResponse.username).toBe(userData.username);
       });
 
-      await test.step('Verify user appears in the table', async () => {
+      await test.step('Verify success message is displayed', async () => {
         await expect(
           createUsersPage.frame.getByText(SUCCESS_MESSAGES.CREATED_RECORD)
         ).toBeVisible();
-        await expect(
-          createUsersPage.getUserByEmail(userData.email)
-        ).toBeVisible();
       });
 
-      await test.step('Verify API returns the created user', async () => {
-        const apiUser = await getUserByEmail(apiContext, userData.email);
-        expect(apiUser).not.toBeNull();
-        expect(apiUser!.email).toBe(userData.email);
-        expect(apiUser!.username).toBe(userData.username);
+      await test.step('Verify UI result matches API response', async () => {
+        const userRow = createUsersPage.frame.getByRole('row', {
+          name: apiResponse.email,
+        });
+        await expect(userRow).toBeVisible();
+
+        const emailCell = userRow.getByRole('cell', {
+          name: apiResponse.email,
+          exact: true,
+        });
+        const usernameCell = userRow.getByRole('cell', {
+          name: apiResponse.username,
+          exact: true,
+        });
+        await expect(emailCell).toBeVisible();
+        await expect(usernameCell).toBeVisible();
       });
     }
   );
