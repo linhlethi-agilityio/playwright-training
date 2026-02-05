@@ -8,3 +8,7 @@ node_modules/
 /playwright/.auth/
 
 /.env
+
+# BDD
+.features-gen/
+cucumber-report/
