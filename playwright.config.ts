@@ -11,7 +11,7 @@ import { defineBddConfig, cucumberReporter } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
   features: 'pocket-base/features/**/*.feature',
-  steps: 'pocket-base/steps/**/*.ts',
+  steps: 'pocket-base/features/steps/**/*.ts',
 });
 
 /**
@@ -51,6 +51,24 @@ export default defineConfig({
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
+      testDir: '.',
+    },
+
+    // Login tests run without storageState (unauthenticated)
+    {
+      name: 'chromium:login',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /.*login\.feature\.spec\.js/,
+    },
+    {
+      name: 'firefox:login',
+      use: { ...devices['Desktop Firefox'] },
+      testMatch: /.*login\.feature\.spec\.js/,
+    },
+    {
+      name: 'webkit:login',
+      use: { ...devices['Desktop Safari'] },
+      testMatch: /.*login\.feature\.spec\.js/,
     },
 
     {
@@ -59,6 +77,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.auth/user.json',
       },
+      testIgnore: /.*login\.feature\.spec\.js/,
       dependencies: ['setup'],
     },
 
@@ -68,6 +87,7 @@ export default defineConfig({
         ...devices['Desktop Firefox'],
         storageState: 'playwright/.auth/user.json',
       },
+      testIgnore: /.*login\.feature\.spec\.js/,
       dependencies: ['setup'],
     },
 
@@ -77,6 +97,7 @@ export default defineConfig({
         ...devices['Desktop Safari'],
         storageState: 'playwright/.auth/user.json',
       },
+      testIgnore: /.*login\.feature\.spec\.js/,
       dependencies: ['setup'],
     },
 

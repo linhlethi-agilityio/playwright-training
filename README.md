@@ -1,10 +1,6 @@
-# Playwright Training
+# Playwright BDD Training
 
-A comprehensive Playwright testing project for learning and practicing automated end-to-end testing. This project contains example tests for the [PocketBase Demo](https://pocketbase.io/demo/) admin dashboard, demonstrating various Playwright features and best practices.
-
-## Description
-
-This repository contains automated test cases written in Playwright for testing the PocketBase demo admin dashboard. The tests cover key user flows including login and page interactions. The project follows the Page Object Model (POM) pattern for better test organization and maintainability.
+A comprehensive Playwright BDD testing project for learning and practicing behavior-driven development with end-to-end testing. This project contains test scenarios for the [PocketBase Demo](https://pocketbase.io/demo/) admin dashboard.
 
 ## Test Website
 
@@ -33,8 +29,8 @@ The project includes test cases for:
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
-- pnpm (v10.18.2 or higher)
+- Node.js v20+
+- pnpm v10+
 
 ## Installation
 
@@ -44,10 +40,10 @@ The project includes test cases for:
 git clone https://gitlab.asoft-python.com/linh.lethi/playwright-training.git
 ```
 
-2. Checkout to the example branch:
+2. Checkout the BDD branch:
 
 ```bash
-git checkout feat/pocket-base
+git checkout feat/pocket-base-bdd
 ```
 
 3. Install dependencies:
@@ -66,27 +62,39 @@ pnpm exec playwright install
 
 ### Running Tests
 
-Run all tests:
+Run all tests (generates BDD files then runs):
 
 ```bash
 pnpm test
 ```
 
-Run tests in headed mode:
+Run in headed mode:
 
 ```bash
 pnpm test:headed
 ```
 
-Run tests in UI mode:
+Run in UI mode:
 
 ```bash
 pnpm test:ui
 ```
 
+Run in debug mode:
+
+```bash
+pnpm test:debug
+```
+
+Generate BDD spec files only:
+
+```bash
+pnpm bddgen
+```
+
 ### Viewing Reports
 
-Show the latest test report:
+Show Playwright HTML report:
 
 ```bash
 pnpm test:show-report
@@ -124,26 +132,38 @@ pnpm format
 playwright-training/
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml   # CI workflow
+│       └── playwright.yml        # CI/CD pipeline
+├── .features-gen/                # Auto-generated BDD spec files (gitignored)
 ├── pocket-base/
-│   └── example.spec.ts      # Test file
-├── .env                     # Environment variables
-├── .gitignore               # Git ignore rules
-├── playwright.config.ts     # Playwright configuration
-├── package.json             # Project dependencies
-└── pnpm-lock.yaml           # Lock file
+│   ├── constants/                # URLs, messages, API paths
+│   ├── data/                     # Test data and validation cases
+│   ├── features/
+│   │   ├── steps/                # Step definitions
+│   │   │   ├── fixtures.ts       # Re-export shim
+│   │   │   ├── common.ts         # Shared steps
+│   │   │   ├── login.ts
+│   │   │   ├── user-create.ts
+│   │   │   ├── user-delete.ts
+│   │   │   ├── user-search.ts
+│   │   │   ├── user-sort.ts
+│   │   │   └── user-update.ts
+│   │   ├── login.feature
+│   │   ├── user-create.feature
+│   │   ├── user-delete.feature
+│   │   ├── user-search.feature
+│   │   ├── user-sort.feature
+│   │   └── user-update.feature
+│   ├── fixtures/                 # Playwright fixtures
+│   │   ├── api.ts                # Base fixture (apiContext, ctx)
+│   │   ├── users.ts              # Page fixtures with user setup/teardown
+│   │   └── index.ts              # Exports Given/When/Then/After
+│   ├── pages/                    # Page Object Models
+│   ├── services/                 # API service helpers
+│   └── utils/                   # Utility functions
+├── playwright.config.ts          # Playwright + BDD configuration
+├── package.json
+└── pnpm-lock.yaml
 ```
-
-## Configuration
-
-The Playwright configuration ([playwright.config.ts](playwright.config.ts)) includes:
-
-- Test directory: `./pocket-base`
-- Parallel test execution
-- Retry on failure in CI
-- HTML reporter
-- Multi-browser support (Chromium, Firefox, WebKit)
-- Authentication setup project
 
 ## Test Report
 

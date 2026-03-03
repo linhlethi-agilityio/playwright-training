@@ -1,7 +1,7 @@
-name: Playwright Tests
+name: Playwright BDD Tests
 on:
   push:
-    branches: [ main, master, feat/pocket-base ]
+    branches: [ main, master, feat/pocket-base-bdd ]
   pull_request:
     branches: [ main, master ]
 
@@ -15,20 +15,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 10
+
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+        cache: 'pnpm'
+
     - name: Install dependencies
-      run: npm install -g pnpm && pnpm install
+      run: pnpm install
+
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
-    - name: Run Playwright tests
+
+    - name: Generate BDD test files
+      run: pnpm bddgen
+
+    - name: Run Playwright BDD tests
       run: pnpm exec playwright test
-    - uses: actions/upload-artifact@v4
+
+    - name: Upload Playwright HTML Report
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: playwright-report/
+        retention-days: 30
+
+    - name: Upload Cucumber HTML Report
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: cucumber-report
+        path: cucumber-report/
         retention-days: 30
 
     # === Deploy generated report to Vercel using GitHub Action ===
