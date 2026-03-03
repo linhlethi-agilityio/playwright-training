@@ -1,14 +1,18 @@
 import { APIRequestContext, Page } from '@playwright/test';
 
 import { apiTest as test } from './api';
-import { UsersPage } from '@pocket-base/pages';
+import { LoginPage, UsersPage } from '@pocket-base/pages';
 import { createUser, deleteUser, UserData } from '@pocket-base/services';
 
 type UsersPageWithUsers = UsersPage & { userList: UserData[] };
 
+const DELETE_MULTIPLE_USER_COUNT = 2;
+
 type UsersFixtures = {
+  loginPage: LoginPage;
   userCount: number;
   deleteUsersPage: UsersPageWithUsers;
+  deleteMultipleUsersPage: UsersPageWithUsers;
   sortUsersPage: UsersPageWithUsers;
   searchUsersPage: UsersPageWithUsers;
   updateUsersPage: UsersPageWithUsers;
@@ -56,10 +60,20 @@ const setupUsersPage = async (
 };
 
 export const usersTest = test.extend<UsersFixtures>({
-  userCount: 1,
+  loginPage: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await use(loginPage);
+  },
+
+  userCount: [1, { option: true }],
 
   deleteUsersPage: async ({ page, apiContext, userCount }, use) => {
     await setupUsersPage(page, apiContext, 'user', userCount, use);
+  },
+
+  deleteMultipleUsersPage: async ({ page, apiContext }, use) => {
+    await setupUsersPage(page, apiContext, 'user', DELETE_MULTIPLE_USER_COUNT, use);
   },
 
   sortUsersPage: async ({ page, apiContext, userCount }, use) => {
