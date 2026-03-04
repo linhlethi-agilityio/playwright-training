@@ -1,4 +1,5 @@
-@user @search
+@user
+@search
 Feature: Search User
 
   Background:

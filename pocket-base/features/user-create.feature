@@ -1,4 +1,5 @@
-@user @create
+@user
+@create
 Feature: Create User
 
   Background:

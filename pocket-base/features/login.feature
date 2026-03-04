@@ -1,4 +1,5 @@
-@auth @login
+@auth
+@login
 Feature: LO01 - PocketBase Login
 
   Background:

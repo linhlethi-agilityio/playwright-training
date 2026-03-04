@@ -1,10 +1,12 @@
-@user @sort
+@user
+@sort
 Feature: Sort User
 
   Background:
     Given I have 4 prepared users on the sort users page
 
-  @PK004 @PK006
+  @PK004
+  @PK006
   Scenario Outline: Should sort users by <column> in descending and ascending order
     When I click sort on column "<column>"
     Then column "<column>" should be sorted in descending order

@@ -1,4 +1,5 @@
-@user @update
+@user
+@update
 Feature: Update User
 
   @PK013

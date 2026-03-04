@@ -15,6 +15,7 @@ specifiers:
   npm-run-all: ^4.1.5
   playwright-bdd: ^8.4.2
   prettier: ^3.7.4
+  prettier-plugin-gherkin: ^3.1.3
   typescript: ^5.9.3
 
 devDependencies:
@@ -32,6 +33,7 @@ devDependencies:
   npm-run-all: 4.1.5
   playwright-bdd: 8.4.2_@playwright+test@1.58.1
   prettier: 3.8.1
+  prettier-plugin-gherkin: 3.1.3
   typescript: 5.9.3
 
 packages:
@@ -1953,6 +1955,14 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       fast-diff: 1.3.0
+    dev: true
+
+  /prettier-plugin-gherkin/3.1.3:
+    resolution: {integrity: sha512-w9uB413NlSi8ZQwpexyu+ttriJJ88eZLV0x88ZTkzkLZyHYEX5wrNtaCx/yFYviIu/tuwsBqDPM47VODnIV/hw==}
+    dependencies:
+      '@cucumber/gherkin': 32.2.0
+      '@cucumber/messages': 27.2.0
+      prettier: 3.8.1
     dev: true
 
   /prettier/3.8.1:

@@ -1,4 +1,5 @@
-@user @delete
+@user
+@delete
 Feature: Delete User
 
   @PK011
