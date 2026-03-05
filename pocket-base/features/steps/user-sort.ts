@@ -1,7 +1,8 @@
 import { Given, When, Then, expect } from './fixtures';
 import { isAscending, isDescending } from '@pocket-base/utils';
+import { DataTable } from 'playwright-bdd';
 
-Given('I have {int} prepared users on the sort users page', async ({ sortUsersPage }) => {
+Given('I have {int} prepared users on the sort users page:', async ({ sortUsersPage }, _count: number, _table: DataTable) => {
   await expect(sortUsersPage.frame.locator('table')).toBeVisible();
 });
 

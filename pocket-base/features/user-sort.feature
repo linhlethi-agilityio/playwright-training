@@ -3,7 +3,12 @@
 Feature: Sort User
 
   Background:
-    Given I have 4 prepared users on the sort users page
+    Given I have 4 prepared users on the sort users page:
+      | email          | name   |
+      | sort_0@example | sort_0 |
+      | sort_2@example | sort_2 |
+      | sort_1@example | sort_1 |
+      | sort_3@example | sort_3 |
 
   @PK004
   @PK006

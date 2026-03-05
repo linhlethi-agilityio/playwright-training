@@ -1,11 +1,11 @@
-import { Given, When, Then, expect } from './fixtures';
+import { Given, When, Then, Before, expect } from './fixtures';
 import { API_COLLECTIONS_PATH, CONFIRM_MESSAGES } from '@pocket-base/constants';
 
-Given('I have {int} prepared user on the delete users page', async ({ deleteUsersPage }) => {
+Before({ tags: '@PK011' }, async ({ deleteUsersPage }) => {
   await expect(deleteUsersPage.frame.locator('table')).toBeVisible();
 });
 
-Given('I have {int} prepared users on the delete users page', async ({ deleteMultipleUsersPage }) => {
+Before({ tags: '@PK012' }, async ({ deleteMultipleUsersPage }) => {
   await expect(deleteMultipleUsersPage.frame.locator('table')).toBeVisible();
 });
 

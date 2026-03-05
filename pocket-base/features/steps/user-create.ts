@@ -1,7 +1,8 @@
 import { Given, When, Then, expect } from './fixtures';
 import { API_COLLECTIONS_PATH } from '@pocket-base/constants';
-import { generateUserData, verifyUserRowMatchesApiResponse } from '@pocket-base/utils';
+import { verifyUserRowMatchesApiResponse } from '@pocket-base/utils';
 import { CREATE_USER_VALIDATION_CASES } from '@pocket-base/data';
+import { DataTable } from 'playwright-bdd';
 
 Given('I am on the users page', async ({ createUsersPage }) => {
   await expect(createUsersPage.newRecordButton).toBeVisible();
@@ -11,8 +12,17 @@ When('I click the New record button', async ({ createUsersPage }) => {
   await createUsersPage.clickNewRecord();
 });
 
-When('I fill the form with valid user data', async ({ createUsersPage, ctx }) => {
-  ctx.userData = generateUserData('create');
+When('I create a user with the following data:', async ({ createUsersPage, ctx }, table: DataTable) => {
+  const raw = Object.fromEntries(table.rows().map(([field, value]) => [field, value]));
+  const uid = Date.now();
+  ctx.userData = {
+    email: raw.email.replace('@', `_${uid}@`),
+    emailVisibility: raw.emailVisibility === 'true',
+    password: raw.password,
+    passwordConfirm: raw.password,
+    username: `${raw.username}_${uid}`,
+    name: raw.name,
+  };
   await createUsersPage.fillCreateForm(ctx.userData);
 });
 
@@ -36,7 +46,25 @@ Then('the create API response should contain the correct user data', async ({ ct
   expect(ctx.apiResponse.username).toBe(ctx.userData.username);
 });
 
+Then(
+  'the create API response should contain email {string}, username {string}, name {string}',
+  async ({ ctx }, email: string, username: string, name: string) => {
+    expect(ctx.apiResponse.email).toContain(email.split('@')[0]);
+    expect(ctx.apiResponse.username).toContain(username);
+    expect(ctx.apiResponse.name).toBe(name);
+  },
+);
+
 Then('the user row in the table should match the API response', async ({ page, ctx }) => {
+  await verifyUserRowMatchesApiResponse(page.frameLocator('iframe'), ctx.apiResponse);
+});
+
+Then('the user row in the table should contain:', async ({ page, ctx }, table: DataTable) => {
+  const expected = Object.fromEntries(table.rows().map(([field, value]) => [field, value]));
+  for (const [field, value] of Object.entries(expected)) {
+    const partial = field === 'email' ? value.split('@')[0] : field === 'username' ? value.split('_')[0] : value;
+    expect(ctx.apiResponse[field]).toContain(partial);
+  }
   await verifyUserRowMatchesApiResponse(page.frameLocator('iframe'), ctx.apiResponse);
 });
 

@@ -8,12 +8,22 @@ Feature: Create User
 
   @PK009
   Scenario: Should create a new user with valid data
-    When I fill the form with valid user data
+    When I create a user with the following data:
+      | field           | value                |
+      | email           | testuser@example.com |
+      | password        | Test123456           |
+      | username        | testuser             |
+      | name            | Test User            |
+      | emailVisibility | true                 |
     And I click the Create button
     Then the create API response status should be 200
     And the create API response should contain the correct user data
     And I should see the message "Successfully created record."
-    And the user row in the table should match the API response
+    And the user row in the table should contain:
+      | field    | value                |
+      | email    | testuser@example.com |
+      | username | testuser             |
+      | name     | Test User            |
 
   @PK010
   Scenario Outline: Should show validation error for <case>
